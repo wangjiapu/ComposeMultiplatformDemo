@@ -55,6 +55,7 @@ kotlin {
             implementation(libs.androidx.lifecycle.viewmodelCompose)
             implementation(libs.androidx.lifecycle.runtimeCompose)
             implementation(libs.voyager.bottom.sheet.navigator)
+            implementation(libs.napier)
 
 
 //            implementation(libs.voyager.navigator)
@@ -102,6 +103,11 @@ android {
 
 dependencies {
     debugImplementation(compose.uiTooling)
+}
+
+composeCompiler{
+    reportsDestination = layout.buildDirectory.dir("compose_compiler")
+    metricsDestination = layout.buildDirectory.dir("compose_compiler")
 }
 
 compose.desktop {
