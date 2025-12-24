@@ -20,6 +20,114 @@ fun main() {
     println("\n------------------main-----------------end!!")
 }
 
+// WIP: 两个链表相加
+fun addInList(head1: ListNode?, head2: ListNode?): ListNode? {
+    // 解法1:反转链表
+    if (head1 == null) return head2
+    if (head2 == null) return head1
+
+    fun reverseListNode(head: ListNode?): ListNode? {
+        if (head == null) {
+            return null
+        }
+        val dummyNode = ListNode(-1).apply {
+            next = head
+        }
+        var prev = dummyNode
+        var current = head
+        while (current != null) {
+            val nextTemp = current.next
+            current.next = prev
+            prev = current
+            current = nextTemp
+        }
+        return dummyNode.next
+        // 头插法
+//        var temp = head
+//        while (temp != null) {
+//            var a = temp.next
+//            temp.next = dummyNode.next
+//            dummyNode.next = temp
+//            temp = a
+//        }
+    }
+
+    var newHead1 = reverseListNode(head1)
+    var newHead2 = reverseListNode(head2)
+    val newDummyNode = ListNode(-1)
+    var cap = 0
+
+    fun headInsert(node: ListNode,head: ListNode):ListNode{
+        node.next = head.next
+        head.next = node
+        return head
+    }
+
+    while (newHead1 != null && newHead2 != null) {
+        val sum = newHead1.value + newHead2.value + cap
+        val newNode = ListNode(sum % 10)
+        cap = sum / 10
+        headInsert(newNode, newDummyNode)
+        newHead1 = newHead1.next
+        newHead2 = newHead2.next
+    }
+
+    if (newHead1 != null) {
+        while (newHead1 != null) {
+            val sum = newHead1.value + cap
+            newHead1.value = sum % 10
+            cap = sum / 10
+            headInsert(newHead1, newDummyNode)
+            newHead1 = newHead1.next
+        }
+    }
+    if (newHead2 != null) {
+        while (newHead2 != null) {
+            val sum = newHead2.value + cap
+            newHead2.value = sum % 10
+            cap = sum / 10
+            headInsert(newHead2, newDummyNode)
+            newHead2 = newHead2.next
+        }
+    }
+    return newDummyNode.next
+}
+
+// 两个链表相加
+// 这种写法无法满足大数据相加的需求
+fun addInListError(head1: ListNode?, head2: ListNode?): ListNode? {
+    val dummyNode: ListNode = ListNode(-1)
+
+    var p1 = head1
+    var p2 = head2
+
+    fun toNumber(p: ListNode?): Long {
+        var num = 0L
+        var current = p
+        while (current != null) {
+            num = num * 10 + current.value
+            current = current.next
+        }
+        return num
+    }
+
+    val num1 = toNumber(p1)
+    val num2 = toNumber(p2)
+    var sum = num1 + num2
+    while (sum != 0) {
+        val digit = (sum % 10).toInt()
+        val newNode = ListNode(digit)
+        if (dummyNode.next == null) {
+            dummyNode.next = newNode
+        } else {
+            newNode.next = dummyNode.next
+            dummyNode.next = newNode
+        }
+        sum = sum / 10
+    }
+    return dummyNode.next
+}
+
 // 两个链表的第一个公共节点
 // 需要考虑两个链表长度不一样的情况
 fun findFirstCommonNode(pHead1: ListNode?, pHead2: ListNode?): ListNode? {
