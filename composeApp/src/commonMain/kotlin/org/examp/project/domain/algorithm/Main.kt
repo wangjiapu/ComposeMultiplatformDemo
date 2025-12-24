@@ -1,69 +1,38 @@
 package org.examp.project.domain.algorithm
 
 import org.examp.project.domain.core.ListNode
-
-fun initListNode(): ListNode {
-    val values = listOf(1, 2, 3, 4, 5)
-    val dummyHead = ListNode(0)
-    var current = dummyHead
-    for (value in values) {
-        current.next = ListNode(value)
-        current = current.next!!
-    }
-    return dummyHead.next!!
-}
-
-fun initListNode2(): Pair<ListNode?, ListNode?> {
-    val values1 = listOf(1, 3, 5, 7)
-    val values2 = listOf(2, 4, 6, 8)
-
-    fun createList(values: List<Int>): ListNode? {
-        val dummyHead = ListNode(0)
-        var current = dummyHead
-        for (value in values) {
-            current.next = ListNode(value)
-            current = current.next!!
-        }
-        return dummyHead.next
-    }
-
-    return Pair(createList(values1), createList(values2))
-}
-
-fun initListNode3(): Array<ListNode?> {
-    val list1 = listOf(1, 4, 5)
-    val list2 = listOf(1, 3, 4)
-    val list3 = listOf(2, 6)
-
-    fun createList(values: List<Int>): ListNode? {
-        val dummyHead = ListNode(0)
-        var current = dummyHead
-        for (value in values) {
-            current.next = ListNode(value)
-            current = current.next!!
-        }
-        return dummyHead.next
-    }
-
-    return arrayOf(createList(list1), createList(list2), createList(list3))
-}
-
+import org.examp.project.domain.core.createList
 
 fun main() {
     println("\n------------------main-----------------start!!")
-//    mergeKLists(initListNode3())?.let {
-//        var current: ListNode? = it
-//        if (current == null) {
-//            println("ListNode is null")
-//            return
-//        }
-//        while (current != null) {
-//            print("${current.value} -> ")
-//            current = current.next
-//        }
-//    }
-    println(findKthToTail(initListNode(), 1)?.value)
+    removeNthFromEnd(createList(list = arrayOf(1, 2, 3, 4, 5)), 2)?.let {
+        var current: ListNode? = it
+        if (current == null) {
+            println("ListNode is null")
+            return
+        }
+        while (current != null) {
+            print("${current.value} -> ")
+            current = current.next
+        }
+    }
+    // println(findKthToTail(initListNode(), 1)?.value)
     println("\n------------------main-----------------end!!")
+}
+
+// 删除链表的倒数第N个节点
+fun removeNthFromEnd(head: ListNode?, n: Int): ListNode? {
+    val dummyNode = ListNode(-1).apply {
+        // 删除的时候采用虚拟头节点，避免删除头节点时的特殊处理
+        next = head
+    }
+    //1, 2, 3, 4, 5
+    var tempNode = findKthToTail(dummyNode, n + 1)
+    if (tempNode == null) {
+        return null
+    }
+    tempNode.next = tempNode.next?.next
+    return dummyNode.next
 }
 
 // 链表中倒数第k个节点
