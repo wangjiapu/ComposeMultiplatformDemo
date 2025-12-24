@@ -3,7 +3,7 @@ package org.examp.project.domain.algorithm
 import org.examp.project.domain.core.ListNode
 
 fun initListNode(): ListNode {
-    val values = listOf(1, 2)
+    val values = listOf(1, 2, 3, 4, 5)
     val dummyHead = ListNode(0)
     var current = dummyHead
     for (value in values) {
@@ -62,10 +62,59 @@ fun main() {
 //            current = current.next
 //        }
 //    }
-    println(hasCycle(initListNode()))
+    println(findKthToTail(initListNode(), 1)?.value)
     println("\n------------------main-----------------end!!")
 }
 
+// 链表中倒数第k个节点
+fun findKthToTail(pHead: ListNode?, k: Int): ListNode? {
+    if (pHead == null || k <= 0) return null
+    var fast: ListNode? = pHead
+    var slow: ListNode? = pHead
+    repeat(k - 1) {
+        fast = fast?.next
+    }
+    // 注意：k>链表长度
+    if (fast == null) return null
+    while (fast?.next != null) {
+        fast = fast.next
+        slow = slow?.next
+    }
+    return slow
+}
+
+// 环形链表 II  找到环的入口节点
+fun entryNodeOrLoop(head: ListNode?): ListNode? {
+    //解题1:
+    val nodeSet: MutableSet<ListNode> = mutableSetOf()
+    var current = head
+    while (current != null) {
+        if (nodeSet.contains(current)) {
+            return current
+        }
+        nodeSet.add(current)
+        current = current.next
+    }
+
+    // 解题2:
+    if (head == null) return null
+    var slow = head
+    var fast = head
+    while (fast != null && fast.next != null) {
+        fast = fast.next?.next
+        slow = slow?.next!!
+        if (slow == fast) {
+            // 找到相遇点
+            var ptr1 = head
+            while (ptr1 != slow) {
+                ptr1 = ptr1?.next
+                slow = slow?.next
+            }
+            return ptr1
+        }
+    }
+    return null
+}
 
 fun hasCycle(head: ListNode?): Boolean {
     if (head == null) return false
