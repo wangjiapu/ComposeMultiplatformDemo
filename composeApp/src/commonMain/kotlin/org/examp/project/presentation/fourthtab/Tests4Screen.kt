@@ -1,20 +1,20 @@
-package org.examp.project.test3
+package org.examp.project.presentation.fourthtab
 
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.core.screen.ScreenKey
 
-object Test3Tab : Screen {
+object Test4Tab : Screen {
     override val key: ScreenKey
         get() = super.key
 
     @Composable
-    override fun Content() = Test3Screen()
+    override fun Content() = Test4Screen()
 
 }
 
 @Composable
-fun Test3Screen() {
-    Text("Test3Screen")
+fun Test4Screen() {
+    Text("Test4Screen")
 }

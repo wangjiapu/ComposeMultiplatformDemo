@@ -1,4 +1,4 @@
-package org.examp.project.test2
+package org.examp.project.presentation.secondtab
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier

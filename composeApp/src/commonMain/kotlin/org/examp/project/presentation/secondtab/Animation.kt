@@ -1,4 +1,4 @@
-package org.examp.project.test2
+package org.examp.project.presentation.secondtab
 
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.animateDp

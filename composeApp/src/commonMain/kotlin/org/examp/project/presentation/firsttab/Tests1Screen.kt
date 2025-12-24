@@ -1,4 +1,4 @@
-package org.examp.project.test1
+package org.examp.project.presentation.firsttab
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.animateContentSize
