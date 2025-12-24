@@ -20,6 +20,48 @@ fun main() {
     println("\n------------------main-----------------end!!")
 }
 
+// 两个链表的第一个公共节点
+// 需要考虑两个链表长度不一样的情况
+fun findFirstCommonNode(pHead1: ListNode?, pHead2: ListNode?): ListNode? {
+    var p1 = pHead1
+    var p2 = pHead2
+    // 这样写肯定错误
+//    while (p1 != null && p2 != null) {
+//        if (p1 == p2) {
+//            return p1
+//        }
+//        p1 = p1.next
+//        p2 = p2.next
+//
+//    }
+
+    // 解法1:时间复杂度 O(mn)
+    while (p1 != null) {
+        p2 = pHead2
+        while (p2 != null) {
+            if (p1 == p2) {
+                return p1
+            }
+            p2 = p2.next
+        }
+        p1 = p1.next
+    }
+    // 解法2: 时间复杂度O(m+n)
+    while (p1 != p2) {
+        p1 = if (p1 == null) {
+            pHead2
+        } else {
+            p1.next
+        }
+        p2 = if (p2 == null) {
+            pHead1
+        } else {
+            p2.next
+        }
+    }
+    return p1
+}
+
 // 删除链表的倒数第N个节点
 fun removeNthFromEnd(head: ListNode?, n: Int): ListNode? {
     val dummyNode = ListNode(-1).apply {
