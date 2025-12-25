@@ -1,7 +1,31 @@
 package org.examp.project.domain.algorithm
 
+import composemultiplatformdemo.composeapp.generated.resources.Res
 import org.examp.project.domain.core.ListNode
 import org.examp.project.domain.core.PriorityQueueCompat
+
+// 判断一个链表是否为回文结构
+fun isPail(head: ListNode?): Boolean {
+    if (head == null) {
+        return false
+    }
+    var p = head
+    val list = mutableListOf<Int>()
+    while (p != null) {
+        list.add(p.value)
+        p = p.next
+    }
+    var right = list.size - 1
+    var left = 0
+    while (left < right) {
+        if (list[left] != list[right]) {
+            return false
+        }
+        left++
+        right--
+    }
+    return true
+}
 
 // 单链表的排序
 fun sortInList(head: ListNode?): ListNode? {
