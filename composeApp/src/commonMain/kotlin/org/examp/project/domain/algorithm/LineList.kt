@@ -1,8 +1,31 @@
 package org.examp.project.domain.algorithm
 
 import org.examp.project.domain.core.ListNode
+import org.examp.project.domain.core.PriorityQueueCompat
 
-// WIP: 两个链表相加
+// 单链表的排序
+fun sortInList(head: ListNode?): ListNode? {
+    if (head == null) return null
+    //a-b升序
+    val queue = PriorityQueueCompat<Int>(comparator = Comparator { a, b -> a - b })
+    var p = head;
+    while (p != null) {
+        queue.add(p.value)
+        p = p.next
+    }
+    val dummyNode = ListNode(-1)
+    p = dummyNode
+    while (!queue.isEmpty()) {
+        val value = queue.poll()
+        if (value != null) {
+            p?.next = ListNode(value)
+            p = p?.next
+        }
+    }
+    return dummyNode.next
+}
+
+// 两个链表相加
 fun addInList(head1: ListNode?, head2: ListNode?): ListNode? {
     // 解法1:反转链表
     fun baseReverseList(head1: ListNode?, head2: ListNode?): ListNode? {
