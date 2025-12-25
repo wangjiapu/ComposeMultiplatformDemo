@@ -1,8 +1,26 @@
 package org.examp.project.domain.algorithm
 
-import composemultiplatformdemo.composeapp.generated.resources.Res
 import org.examp.project.domain.core.ListNode
 import org.examp.project.domain.core.PriorityQueueCompat
+
+// 删除有序链表中重复的元素-I
+fun deleteDuplicates(head: ListNode?): ListNode? {
+    if (head == null) {
+        return head
+    }
+    var slow = head
+    var fast = head.next
+    while (fast != null) {
+        if (slow?.value == fast.value) {
+            fast = fast.next
+        } else {
+            slow?.next = fast
+            slow = slow?.next
+        }
+    }
+    slow?.next = fast
+    return head
+}
 
 // 链表的奇偶重排
 fun oddEvenList(head: ListNode?): ListNode? {
