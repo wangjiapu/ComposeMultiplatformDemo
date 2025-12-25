@@ -4,6 +4,34 @@ import composemultiplatformdemo.composeapp.generated.resources.Res
 import org.examp.project.domain.core.ListNode
 import org.examp.project.domain.core.PriorityQueueCompat
 
+// 链表的奇偶重排
+fun oddEvenList(head: ListNode?): ListNode? {
+    // write code here
+    if (head == null) {
+        return head
+    }
+    val dummyNode1 = ListNode(-1)
+    var p1 = dummyNode1
+    val dummyNode2 = ListNode(-1)
+    var p2 = dummyNode2
+    var index = 1
+    var p = head
+    while (p != null) {
+        if (index % 2 == 0) {
+            p2.next = p
+            p2 = p2.next!!
+        } else {
+            p1.next = p
+            p1 = p1.next!!
+        }
+        p = p.next
+        index++
+    }
+    p2.next = null // 注意，不然会有循环列表
+    p1.next = dummyNode2.next
+    return dummyNode1.next
+}
+
 // 判断一个链表是否为回文结构
 fun isPail(head: ListNode?): Boolean {
     if (head == null) {
