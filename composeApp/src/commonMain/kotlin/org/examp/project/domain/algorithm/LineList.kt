@@ -5,74 +5,107 @@ import org.examp.project.domain.core.ListNode
 // WIP: 两个链表相加
 fun addInList(head1: ListNode?, head2: ListNode?): ListNode? {
     // 解法1:反转链表
-    if (head1 == null) return head2
-    if (head2 == null) return head1
+    fun baseReverseList(head1: ListNode?, head2: ListNode?): ListNode? {
+        if (head1 == null) return head2
+        if (head2 == null) return head1
 
-    fun reverseListNode(head: ListNode?): ListNode? {
-        if (head == null) {
-            return null
+        fun reverseListNode(head: ListNode?): ListNode? {
+
+            if (head == null) return null
+            var prev: ListNode? = null
+            var current: ListNode? = head
+            var nextTemp: ListNode? = null
+            while (current != null) {
+                nextTemp = current.next
+                current.next = prev
+                prev = current
+                current = nextTemp
+            }
+            return prev
         }
-        val dummyNode = ListNode(-1).apply {
-            next = head
+
+        var newHead1 = reverseListNode(head1)
+        var newHead2 = reverseListNode(head2)
+        val newDummyNode = ListNode(-1)
+        var cap = 0
+
+        fun headInsert(node: ListNode, head: ListNode): ListNode {
+            node.next = head.next
+            head.next = node
+            return head
         }
-        var prev = dummyNode
-        var current = head
-        while (current != null) {
-            val nextTemp = current.next
-            current.next = prev
-            prev = current
-            current = nextTemp
+
+        while (newHead1 != null || newHead2 != null) {
+            val sum = if (newHead1?.value == null) {
+                0
+            } else {
+                newHead1.value
+            } + if (newHead2?.value == null) {
+                0
+            } else {
+                newHead2.value
+            } + cap
+
+            val newNode = ListNode(sum % 10)
+            cap = sum / 10
+            headInsert(newNode, newDummyNode)
+            newHead1 = newHead1?.next
+            newHead2 = newHead2?.next
+        }
+
+        if (cap != 0) {
+            val newNode = ListNode(cap)
+            headInsert(newNode, newDummyNode)
+        }
+        return newDummyNode.next
+    }
+
+    // 解法2:使用栈
+    fun baseStack(head1: ListNode?, head2: ListNode?): ListNode? {
+        val stack1: ArrayDeque<ListNode> = ArrayDeque<ListNode>()
+        val stack2 = ArrayDeque<ListNode>()
+        var p1 = head1
+        var p2 = head2
+        while (p1 != null) {
+            stack1.addLast(p1)
+            p1 = p1.next
+        }
+        while (p2 != null) {
+            stack2.addLast(p2)
+            p2 = p2.next
+        }
+        val dummyNode = ListNode(-1)
+        var cap = 0
+
+        fun insertHead(node: ListNode, head: ListNode): ListNode {
+            node.next = head.next
+            head.next = node
+            return head
+        }
+
+        while (stack1.isNotEmpty() || stack2.isNotEmpty()) {
+            val sum = if (stack1.isEmpty()) {
+                0
+            } else {
+                stack1.removeLast().value
+            } + if (stack2.isEmpty()) {
+                0
+            } else {
+                stack2.removeLast().value
+            } + cap
+
+            val newNode = ListNode(sum % 10)
+            cap = sum / 10
+            insertHead(newNode, dummyNode)
+        }
+
+        if (cap != 0) {
+            insertHead(ListNode(cap), dummyNode)
         }
         return dummyNode.next
-        // 头插法
-//        var temp = head
-//        while (temp != null) {
-//            var a = temp.next
-//            temp.next = dummyNode.next
-//            dummyNode.next = temp
-//            temp = a
-//        }
     }
 
-    var newHead1 = reverseListNode(head1)
-    var newHead2 = reverseListNode(head2)
-    val newDummyNode = ListNode(-1)
-    var cap = 0
-
-    fun headInsert(node: ListNode,head: ListNode):ListNode{
-        node.next = head.next
-        head.next = node
-        return head
-    }
-
-    while (newHead1 != null && newHead2 != null) {
-        val sum = newHead1.value + newHead2.value + cap
-        val newNode = ListNode(sum % 10)
-        cap = sum / 10
-        headInsert(newNode, newDummyNode)
-        newHead1 = newHead1.next
-        newHead2 = newHead2.next
-    }
-
-    if (newHead1 != null) {
-        while (newHead1 != null) {
-            val sum = newHead1.value + cap
-            newHead1.value = sum % 10
-            cap = sum / 10
-            headInsert(newHead1, newDummyNode)
-            newHead1 = newHead1.next
-        }
-    }
-    if (newHead2 != null) {
-        while (newHead2 != null) {
-            val sum = newHead2.value + cap
-            newHead2.value = sum % 10
-            cap = sum / 10
-            headInsert(newHead2, newDummyNode)
-            newHead2 = newHead2.next
-        }
-    }
-    return newDummyNode.next
+    return baseStack(head1, head2)
 }
 
 // 两个链表相加
@@ -96,7 +129,7 @@ fun addInListError(head1: ListNode?, head2: ListNode?): ListNode? {
     val num1 = toNumber(p1)
     val num2 = toNumber(p2)
     var sum = num1 + num2
-    while (sum != 0) {
+    while (sum != 0L) {
         val digit = (sum % 10).toInt()
         val newNode = ListNode(digit)
         if (dummyNode.next == null) {
@@ -373,7 +406,7 @@ fun reverseBetween(head: ListNode? = null, m: Int, n: Int): ListNode? {
 
 }
 
-
+// 反转链表
 fun reverseListNode(head: ListNode? = null): ListNode? {
     if (head == null) return null
     var prev: ListNode? = null

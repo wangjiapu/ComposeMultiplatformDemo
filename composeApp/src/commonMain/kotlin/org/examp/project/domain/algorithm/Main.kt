@@ -5,7 +5,7 @@ import org.examp.project.domain.core.createList
 
 fun main() {
     println("\n------------------main-----------------start!!")
-    removeNthFromEnd(createList(list = arrayOf(1, 2, 3, 4, 5)), 2)?.let {
+    addInList(createList(list = arrayOf(9, 3, 7)),createList(list = arrayOf(6, 3)))?.let {
         var current: ListNode? = it
         if (current == null) {
             println("ListNode is null")
