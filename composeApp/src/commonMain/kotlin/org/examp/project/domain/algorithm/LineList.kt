@@ -3,6 +3,41 @@ package org.examp.project.domain.algorithm
 import org.examp.project.domain.core.ListNode
 import org.examp.project.domain.core.PriorityQueueCompat
 
+//删除有序链表中重复的元素-II
+fun deleteDuplicates2(head: ListNode?): ListNode? {
+    // 边界条件
+    if (head?.next == null) return head
+
+    // 创建虚拟头节点
+    val dummy = ListNode(0)
+    dummy.next = head
+
+    var prev: ListNode? = dummy  // 指向最后一个确定不重复的节点
+    var curr: ListNode? = head   // 当前检查的节点
+
+    while (curr != null) {
+        // 检查当前节点是否与下一个节点重复
+        if (curr.next != null && curr.value == curr.next!!.value) {
+            // 记录重复的值
+            val duplicateVal = curr.value
+
+            // 跳过所有值为 duplicateVal 的节点
+            while (curr != null && curr.value == duplicateVal) {
+                curr = curr.next
+            }
+
+            // prev.next 跳过所有重复节点
+            prev?.next = curr
+        } else {
+            // 当前节点不重复，prev 前进
+            prev = prev?.next
+            curr = curr.next
+        }
+    }
+
+    return dummy.next
+}
+
 // 删除有序链表中重复的元素-I
 fun deleteDuplicates(head: ListNode?): ListNode? {
     if (head == null) {
@@ -18,7 +53,7 @@ fun deleteDuplicates(head: ListNode?): ListNode? {
             slow = slow?.next
         }
     }
-    slow?.next = fast
+    slow?.next = fast // 注意，切断后面所有的数据
     return head
 }
 
