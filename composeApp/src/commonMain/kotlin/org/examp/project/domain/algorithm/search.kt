@@ -2,6 +2,22 @@ package org.examp.project.domain.algorithm
 
 import kotlin.ranges.until
 
+//旋转数组的最小数字
+fun minNumberInRotateArray(nums: IntArray): Int {
+    var l = 0
+    var r = nums.size - 1
+    while (l < r) {
+        val mid = (r - l) / 2 + l
+        if (nums[mid] > nums[r]) {
+            l = mid + 1
+        } else if (nums[mid] < nums[r]) {
+            r = mid
+        } else {
+            r--
+        }
+    }
+    return nums[l]
+}
 
 //数组中的逆序对
 fun inversePairs(nums: IntArray): Int {
