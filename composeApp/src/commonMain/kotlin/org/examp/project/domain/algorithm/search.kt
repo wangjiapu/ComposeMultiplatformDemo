@@ -1,5 +1,48 @@
 package org.examp.project.domain.algorithm
 
+import kotlin.ranges.until
+
+
+//数组中的逆序对
+fun inversePairs(nums: IntArray): Int {
+    fun merge(nums: IntArray, left: Int, mid: Int, right: Int, temp: IntArray): Long {
+        var i = left
+        var j = mid + 1
+        var index = 0
+        var result = 0L
+        while (i <= mid && j <= right) {
+            if (nums[i] <= nums[j]) {
+                temp[index++] = nums[i++]
+            } else {
+                result += (mid + 1 - i)
+                temp[index++] = nums[j++]
+            }
+        }
+        while (i <= mid) {
+            temp[index++] = nums[i++]
+        }
+        while (j <= right) {
+            temp[index++] = nums[j++]
+        }
+        for (k in 0 until index) {
+            nums[left + k] = temp[k]
+        }
+        return result
+    }
+
+    fun sort(nums: IntArray, left: Int, right: Int, temp: IntArray): Long {
+        if (left >= right) {
+            return 0
+        }
+        val mid = (right - left) / 2 + left
+        var sum = sort(nums, left, mid, temp) + sort(nums, mid + 1, right, temp)
+        return sum + merge(nums, left, mid, right, temp)
+    }
+
+    val left = 0
+    val right = nums.size - 1
+    return (sort(nums, left, right, IntArray(nums.size)) % 1000000007).toInt()
+}
 
 // 寻找峰值
 fun findPeekElement(nums: IntArray): Int {
