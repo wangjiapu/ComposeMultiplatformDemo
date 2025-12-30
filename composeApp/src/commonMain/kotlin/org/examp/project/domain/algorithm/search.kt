@@ -1,7 +1,20 @@
 package org.examp.project.domain.algorithm
 
-import composemultiplatformdemo.composeapp.generated.resources.Res
 
+// 寻找峰值
+fun findPeekElement(nums: IntArray): Int {
+    var left = 0
+    var right = nums.size - 1
+    while (left < right) {
+        val mid = (right - left) / 2 + left
+        if (nums[mid] < nums[mid + 1]) {
+            left = mid + 1
+        } else {
+            right = mid
+        }
+    }
+    return left
+}
 
 //二维数组中的查找
 fun find(target: Int, array: Array<IntArray>): Boolean {
