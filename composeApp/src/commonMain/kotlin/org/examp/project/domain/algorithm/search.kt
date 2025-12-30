@@ -2,6 +2,35 @@ package org.examp.project.domain.algorithm
 
 import kotlin.ranges.until
 
+//比较版本号
+fun compare(version1: String, version2: String): Int {
+    val v1 = version1.split(".")
+    val v2 = version2.split(".")
+    var i = 0
+    while (i < v1.size || i < v2.size) {
+        val char1 = if (i < v1.size) {
+            v1[i]
+        } else {
+            "0"
+        }
+        var char2 = if (i < v2.size) {
+            v2[i]
+        } else {
+            "0"
+        }
+        val num1 = char1.toLong()
+        val num2 = char2.toLong()
+        if (num2 < num1) {
+            return 1
+        }
+        if (num2 > num1) {
+            return -1
+        }
+        i++
+    }
+    return 0
+}
+
 //旋转数组的最小数字
 fun minNumberInRotateArray(nums: IntArray): Int {
     var l = 0
