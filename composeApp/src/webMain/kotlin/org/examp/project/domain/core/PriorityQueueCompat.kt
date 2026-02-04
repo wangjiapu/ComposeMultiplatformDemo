@@ -17,3 +17,24 @@ actual class PriorityQueueCompat<T> actual constructor(
 
     actual fun isEmpty(): Boolean = list.isEmpty()
 }
+
+actual class LinkedListCompat<T> {
+    actual constructor()
+    private val delegate = mutableListOf<T>()
+
+    actual fun offer(element: T) {
+        delegate.add(element)
+    }
+
+    actual fun poll(): T? = if (delegate.isNotEmpty()) {
+        delegate.removeFirst()
+    } else {
+        null
+    }
+
+    actual fun peek(): T? = delegate.firstOrNull()
+
+    actual fun isEmpty(): Boolean = delegate.isEmpty()
+
+    actual fun size(): Int = delegate.size
+}
