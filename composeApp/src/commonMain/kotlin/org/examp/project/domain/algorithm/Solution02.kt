@@ -117,6 +117,35 @@ class Solution02 {
         return hasPathSum(root.left, tempSum) || hasPathSum(root.right, tempSum)
     }
 
+    /**
+     *二叉搜索树与双向链表
+     */
+    fun convert(pRootOfTree: TreeNode?): TreeNode? {
+        if (pRootOfTree == null) {
+            return null
+        }
+        var pre: TreeNode? = null
+        var head: TreeNode? = null
+        fun inorder(node: TreeNode?) {
+            if (node == null) {
+                return
+            }
+            if (pre == null) {
+                head = node
+            } else {
+                pre?.right = node
+                node.left = pre
+            }
+            pre = node
+            inorder(node.right)
+        }
+        inorder(pRootOfTree)
+
+        head?.left = pre
+        pre?.right = head
+
+        return head
+    }
 
 
     private fun traversal3(root: TreeNode?, result: MutableList<Int>) {
