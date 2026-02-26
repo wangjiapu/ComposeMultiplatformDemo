@@ -118,35 +118,54 @@ class Solution02 {
     }
 
     /**
-     *二叉搜索树与双向链表
+     *对称二叉树
      */
-    fun convert(pRootOfTree: TreeNode?): TreeNode? {
-        if (pRootOfTree == null) {
-            return null
-        }
-        var pre: TreeNode? = null
-        var head: TreeNode? = null
-        fun inorder(node: TreeNode?) {
-            if (node == null) {
-                return
-            }
-            if (pre == null) {
-                head = node
-            } else {
-                pre?.right = node
-                node.left = pre
-            }
-            pre = node
-            inorder(node.right)
-        }
-        inorder(pRootOfTree)
+    fun isSymmetrical(pRoot: TreeNode?): Boolean {
 
-        head?.left = pre
-        pre?.right = head
-
-        return head
+        return pRoot == null || checkSymmetric(pRoot.left, pRoot.right)
     }
 
+    // 递归实现
+    fun checkSymmetric(left: TreeNode?, right: TreeNode?): Boolean {
+        if (left == null && right == null) {
+            return true
+        }
+        if (left == null || right == null) {
+            return false
+        }
+        if (left.`val` != right.`val`) {
+            return false
+        }
+        return checkSymmetric(left.left, right.right) && checkSymmetric(left.right, right.left)
+    }
+
+    // 非递归实现
+    fun isSymmetricIterative(pRoot: TreeNode?): Boolean {
+        if (pRoot == null) {
+            return true
+        }
+        val queue = ArrayDeque<TreeNode?>()
+        queue.add(pRoot.left)
+        queue.add(pRoot.right)
+        while (queue.isNotEmpty()) {
+            val left = queue.removeFirst()
+            val right = queue.removeFirst()
+            if (left == null && right == null) {
+                continue
+            }
+            if (left == null || right == null) {
+                return false
+            }
+            if (left.`val` != right.`val`) {
+                return false
+            }
+            queue.add(left.left)
+            queue.add(right.right)
+            queue.add(left.right)
+            queue.add(right.left)
+        }
+        return true
+    }
 
     private fun traversal3(root: TreeNode?, result: MutableList<Int>) {
         if (root == null) {
