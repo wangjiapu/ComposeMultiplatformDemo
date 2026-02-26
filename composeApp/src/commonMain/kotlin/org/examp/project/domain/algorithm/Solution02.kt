@@ -183,6 +183,20 @@ class Solution02 {
         return newRoot
     }
 
+    /**
+     * 二叉树的镜像
+     */
+    fun mirror(pRoot: TreeNode?): TreeNode? {
+        if (pRoot == null) {
+            return null
+        }
+        val left = mirror(pRoot.left)
+        val right = mirror(pRoot.right)
+        pRoot.right = left
+        pRoot.left = right
+        return pRoot
+    }
+
 
     private fun traversal3(root: TreeNode?, result: MutableList<Int>) {
         if (root == null) {
