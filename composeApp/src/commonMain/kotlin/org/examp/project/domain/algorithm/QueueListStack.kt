@@ -35,9 +35,10 @@ class QueueListStack {
      * pop时：若弹出的元素等于minStack栈顶（说明当前最小值被弹出），则同步弹出minStack栈顶；
      * min时：直接返回minStack栈顶（当前栈的最小值）。
      */
-    inner class MinStack{
+    inner class MinStack {
         // 主栈：存储所有元素
         private val dataStack = ArrayDeque<Int>()
+
         // 最小栈：存储每个状态的最小值（仅压入更小/相等的元素）
         private val minStack = ArrayDeque<Int>()
 
@@ -104,5 +105,39 @@ class QueueListStack {
         fun size(): Int {
             return dataStack.size
         }
+    }
+
+    /**
+     * 有效括号
+     */
+    fun isValid(s: String): Boolean {
+        val stack = ArrayDeque<Char>()
+        val chs = s.toCharArray()
+        val bracketMap = mapOf(
+            ')' to '(',
+            ']' to '[',
+            '}' to '{'
+        )
+
+        fun removeCh(ch: Char): Boolean {
+            if (stack.isEmpty() || stack.last() != bracketMap[ch]) {
+                return false
+            } else {
+                stack.removeLast()
+            }
+            return true
+        }
+        chs.forEach {
+            when (it) {
+                '(', '[', '{' -> stack.addLast(it)
+                else -> {
+                    if (!removeCh(it)) {
+                        return false
+                    }
+                }
+            }
+
+        }
+        return stack.isEmpty()
     }
 }
