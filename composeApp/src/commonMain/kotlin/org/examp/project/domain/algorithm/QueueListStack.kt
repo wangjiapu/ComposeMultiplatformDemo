@@ -140,4 +140,40 @@ class QueueListStack {
         }
         return stack.isEmpty()
     }
+
+    /**
+     * 滑动窗口的最大值
+     */
+    fun maxInWindows(nums: IntArray, k: Int): IntArray {
+        if (nums.isEmpty() || k <= 0 || k > nums.size) return intArrayOf()
+        if (k == 1) return nums // 窗口大小为1，最大值就是元素本身
+
+        // 结果数组：长度 = nums.size - k + 1
+        val result = IntArray(nums.size - k + 1)
+        // 双端队列：存储nums索引，保证对应值单调递减
+        val deque = ArrayDeque<Int>()
+
+        for (i in nums.indices) {
+            // 步骤1：移除超出窗口的队头元素（不在[i-k+1, i]范围内）
+            while (deque.isNotEmpty() && deque.first() <= i - k) {
+                deque.removeFirst()
+            }
+
+            // 步骤2：维护队列单调性：移除队尾≤当前值的索引（这些值不可能是后续窗口的最大值）
+            while (deque.isNotEmpty() && nums[deque.last()] <= nums[i]) {
+                deque.removeLast()
+            }
+
+            // 步骤3：加入当前索引到队尾
+            deque.addLast(i)
+
+            // 步骤4：窗口已形成（i ≥ k-1），记录最大值（队头对应的值）
+            if (i >= k - 1) {
+                result[i - k + 1] = nums[deque.first()]
+            }
+        }
+
+        return result
+    }
+
 }
