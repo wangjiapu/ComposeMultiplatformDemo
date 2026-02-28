@@ -1,6 +1,7 @@
 package org.examp.project.domain.algorithm
 
 import cafe.adriel.voyager.core.stack.Stack
+import org.examp.project.domain.core.PriorityQueueCompat
 
 /**
  * 堆、栈、队列
@@ -176,4 +177,78 @@ class QueueListStack {
         return result
     }
 
+
+    /**
+     * 最小的K个数
+     */
+    fun getLeastNumbersSolution(input: IntArray, k: Int): IntArray {
+        if (input.isEmpty() || k <= 0) {
+            return intArrayOf()
+        }
+        if (k >= input.size) {
+            return input
+        }
+        val result = IntArray(k)
+        val queue = PriorityQueueCompat<Int>(comparator = Comparator { a, b -> a - b })
+        // val maxHeap=priorityQueue<Int>(k,compareByDescending { it })
+
+        input.forEach {
+            queue.add(it)
+        }
+        repeat(k) {
+            result[it] = queue.poll() ?: 0
+        }
+        return result
+    }
+
+    fun findKth(a: IntArray, n: Int, K: Int): Int {
+        /**
+         * 思路一：排序后取值
+         * 思路二：使用小根堆
+         * 思路三：使用快速排序的思想
+         */
+        val targetIndex = n - K
+        return quickSort(a, 0, n - 1, targetIndex)
+    }
+
+    fun mySort(nums: IntArray) {
+        quickSort(nums, 0, nums.size - 1, 1)
+    }
+
+    fun quickSort(nums: IntArray, left: Int, right: Int, targetIndex: Int): Int {
+        val pivot = partition(nums, left, right)
+        return when {
+            targetIndex == pivot -> nums[targetIndex]
+            targetIndex < pivot -> quickSort(nums, left, pivot - 1, targetIndex)
+            else -> quickSort(nums, pivot + 1, right, targetIndex)
+        }
+    }
+
+    fun partition(nums: IntArray, left: Int, right: Int): Int {
+        val mid = midTree(nums, left, right)
+        swap(nums, left, mid)
+        var i = left
+        var j = right
+        while (i < j) {
+            while (i < j && nums[j] >= nums[left]) {
+                j--
+            }
+            while (i < j && nums[i] <= nums[left]) {
+                i++
+            }
+            swap(nums, i, j)
+        }
+        swap(nums, i, left)
+        return i
+    }
+
+    fun midTree(nums: IntArray, left: Int, right: Int): Int {
+        return left
+    }
+
+    fun swap(nums: IntArray, i: Int, j: Int) {
+        val temp = nums[i]
+        nums[i] = nums[j]
+        nums[j] = temp
+    }
 }
