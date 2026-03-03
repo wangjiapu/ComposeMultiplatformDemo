@@ -13,6 +13,7 @@ actual class PriorityQueueCompat<T> actual constructor(
     actual fun poll(): T? = if (list.isNotEmpty()) list.removeFirst() else null
     actual fun peek(): T? = list.firstOrNull()
     actual fun isEmpty(): Boolean = list.isEmpty()
+    actual fun size(): Int = list.size
 }
 
 actual class LinkedListCompat<T> actual constructor() {

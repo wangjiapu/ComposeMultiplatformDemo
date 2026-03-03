@@ -1,6 +1,5 @@
 package org.examp.project.domain.algorithm
 
-import cafe.adriel.voyager.core.stack.Stack
 import org.examp.project.domain.core.PriorityQueueCompat
 
 /**
@@ -250,5 +249,36 @@ class QueueListStack {
         val temp = nums[i]
         nums[i] = nums[j]
         nums[j] = temp
+    }
+
+    inner class Median() {
+        private val minHeap = PriorityQueueCompat<Int>(comparator = Comparator { a, b -> a - b })
+        private val maxHeap = PriorityQueueCompat<Int>(comparator = Comparator { a, b -> b - a })
+
+        fun insert(num: Int) {
+            minHeap.add(num)
+            val m = minHeap.poll()
+            m?.let {
+                maxHeap.add(it)
+            }
+            if (maxHeap.size() > minHeap.size()) {
+                val n = maxHeap.poll()
+                n?.let {
+                    minHeap.add(it)
+                }
+            }
+        }
+
+        fun getMedian(): Double? {
+            return if (minHeap.size() > maxHeap.size()) {
+                minHeap.peek()?.toDouble() ?: 0.0
+            } else {
+                val maxNum = maxHeap.peek()
+                if (maxNum == null) {
+                    return 0.0
+                }
+                (minHeap.peek()?.plus(maxNum))?.div(2.0)
+            }
+        }
     }
 }

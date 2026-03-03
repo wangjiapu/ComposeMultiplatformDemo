@@ -7,6 +7,7 @@ expect class PriorityQueueCompat<T> {
     fun poll(): T?
     fun peek(): T?
     fun isEmpty(): Boolean
+    fun size(): Int
 }
 
 
