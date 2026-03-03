@@ -35,4 +35,24 @@ class Hash {
         }
         return 0
     }
+
+    /**
+     * 数组中只出现一次的两个数字
+     */
+    fun findNumsAppearOnce(nums: IntArray): IntArray {
+        val hashMap = HashMap<Int, Int>()
+        nums.forEachIndexed { index, value ->
+            if (hashMap.containsKey(value)) {
+                hashMap.remove(value)
+            } else {
+                hashMap[value] = index
+            }
+        }
+        val res = hashMap.values.toIntArray()
+        return if (nums[res[0]] > nums[res[1]]) {
+            intArrayOf(nums[res[1]], nums[res[0]])
+        } else {
+            intArrayOf(nums[res[0]], nums[res[1]])
+        }
+    }
 }
