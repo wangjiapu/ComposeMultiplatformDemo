@@ -55,4 +55,30 @@ class Hash {
             intArrayOf(nums[res[0]], nums[res[1]])
         }
     }
+
+
+    /**
+     * 缺失的第一个正整数
+     */
+    fun minNumberDisappeared(nums: IntArray): Int {
+        val n = nums.size
+        if (n == 0) {
+            return 1
+        }
+        for (i in 0 until n) {
+            // 使用while保证新换过来的数，也要放到正确的位置上
+            while (nums[i] in 1..n && nums[nums[i] - 1] != nums[i]) {
+                val index = nums[i] - 1
+                val temp = nums[i]
+                nums[i] = nums[index]
+                nums[index] = temp
+            }
+        }
+        for (i in 0 until n) {
+            if (nums[i] != i + 1) {
+                return i + 1
+            }
+        }
+        return n + 1
+    }
 }
