@@ -1,5 +1,7 @@
 package org.examp.project.domain.algorithm
 
+import composemultiplatformdemo.composeapp.generated.resources.Res
+
 class Hash {
     /**
      * 两数之和
@@ -80,5 +82,53 @@ class Hash {
             }
         }
         return n + 1
+    }
+
+    /**
+     * 三数之和
+     */
+    fun threeSum(num: IntArray): Array<IntArray> {
+        val result = mutableListOf<IntArray>()
+        val n = num.size
+        if (n < 3) {
+            return result.toTypedArray()
+        }
+        num.sort()
+        for (i in 0 until n - 2) {
+            if (num[i] > 0) {
+                break
+            }
+            if (i > 0 && num[i] == num[i - 1]) {
+                continue
+            }
+            val target = -num[i]
+            var left = i + 1
+            var right = n - 1
+            while (left < right) {
+                val sum = num[left] + num[right]
+                when {
+                    sum == target -> {
+                        result.add(intArrayOf(num[i], num[left], num[right]))
+                        while (left < right && num[left] == num[left + 1]) {
+                            left++
+                        }
+                        while (left < right && num[right] == num[right - 1]) {
+                            right--
+                        }
+                        left++
+                        right--
+                    }
+
+                    sum < target -> {
+                        left++
+                    }
+
+                    else -> {
+                        right--
+                    }
+                }
+            }
+        }
+        return result.toTypedArray()
     }
 }
