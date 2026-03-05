@@ -58,4 +58,69 @@ class Strings {
         return first.substring(0, len)
     }
 
+    /**
+     * 验证IP地址
+     */
+    fun solve(IP: String): String {
+        if (IP.isEmpty()) {
+            return "Neither"
+        }
+        if (IP.contains(":")) {
+            if (!isValidIPv6(IP)) {
+                return "Neither"
+            }
+            return "IPv6"
+        }
+        if (IP.contains(".")) {
+            if (!isValidIPv4(IP)){
+                return "Neither"
+            }
+            return "IPv4"
+        }
+
+        return "Neither"
+    }
+
+    private fun isValidIPv4(ip:String): Boolean{
+        val segments=ip.split(".")
+        if (segments.size!=4){
+            return false
+        }
+        for(seg in segments){
+            if (seg.isEmpty() || seg.length > 3) return false
+            // 规则3：不能有前导零（长度>1且以0开头）
+            if (seg.length > 1 && seg[0] == '0') return false
+            // 规则4：必须全为数字
+            for (c in seg) {
+                if (!c.isDigit()) return false
+            }
+            // 规则5：数值必须≤255
+            val num = seg.toInt()
+            if (num < 0 || num > 255) return false
+        }
+        return true
+    }
+
+
+    private fun isValidIPv6(ip: String): Boolean {
+        // 分割分段（split(":")会分割出空段，如"2001:0db8::8a2e:0370:7334" → ["2001","0db8","","8a2e","0370","7334"]）
+        val segments = ip.split(':')
+        // 规则1：必须恰好8段
+        if (segments.size != 8) return false
+
+        // 合法的十六进制字符集合（大小写）
+        val hexChars = setOf('0','1','2','3','4','5','6','7','8','9',
+            'a','b','c','d','e','f',
+            'A','B','C','D','E','F')
+
+        for (seg in segments) {
+            // 规则2：分段不能为空，且长度≤4
+            if (seg.isEmpty() || seg.length > 4) return false
+            // 规则3：必须全为合法十六进制字符
+            for (c in seg) {
+                if (c !in hexChars) return false
+            }
+        }
+        return true
+    }
 }
