@@ -39,4 +39,23 @@ class Strings {
         return chars.concatToString()
     }
 
+    /**
+     * 最长公共前缀
+     */
+    fun longestCommonPrefix(strs: Array<String>): String {
+        if (strs.isEmpty()) {
+            return ""
+        }
+        strs.sort()
+        val first = strs[0]
+        val last = strs[strs.size - 1]
+        val len = minOf(last.length, first.length)
+        for (i in 0 until len) {
+            if (first[i] != last[i]) {
+                return first.substring(0, i)
+            }
+        }
+        return first.substring(0, len)
+    }
+
 }
