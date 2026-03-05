@@ -72,7 +72,7 @@ class Strings {
             return "IPv6"
         }
         if (IP.contains(".")) {
-            if (!isValidIPv4(IP)){
+            if (!isValidIPv4(IP)) {
                 return "Neither"
             }
             return "IPv4"
@@ -81,12 +81,12 @@ class Strings {
         return "Neither"
     }
 
-    private fun isValidIPv4(ip:String): Boolean{
-        val segments=ip.split(".")
-        if (segments.size!=4){
+    private fun isValidIPv4(ip: String): Boolean {
+        val segments = ip.split(".")
+        if (segments.size != 4) {
             return false
         }
-        for(seg in segments){
+        for (seg in segments) {
             if (seg.isEmpty() || seg.length > 3) return false
             // 规则3：不能有前导零（长度>1且以0开头）
             if (seg.length > 1 && seg[0] == '0') return false
@@ -109,9 +109,11 @@ class Strings {
         if (segments.size != 8) return false
 
         // 合法的十六进制字符集合（大小写）
-        val hexChars = setOf('0','1','2','3','4','5','6','7','8','9',
-            'a','b','c','d','e','f',
-            'A','B','C','D','E','F')
+        val hexChars = setOf(
+            '0', '1', '2', '3', '4', '5', '6', '7', '8', '9',
+            'a', 'b', 'c', 'd', 'e', 'f',
+            'A', 'B', 'C', 'D', 'E', 'F'
+        )
 
         for (seg in segments) {
             // 规则2：分段不能为空，且长度≤4
@@ -122,5 +124,32 @@ class Strings {
             }
         }
         return true
+    }
+
+    /**
+     * 大数加法
+     */
+    fun solve(s: String, t: String): String {
+        var result = StringBuilder()
+        var sLen = s.length - 1
+        var tLen = t.length - 1
+        var car = 0
+        while (sLen >= 0 || tLen >= 0 || car > 0){
+            val sum = if (sLen >= 0) {
+                s[sLen] - '0'
+            } else {
+                0
+            } + if (tLen >= 0) {
+                t[tLen]-'0'
+            } else {
+                0
+            } + car
+            result.append(sum % 10)
+            car = sum / 10
+            sLen--
+            tLen--
+        }
+
+        return result.reverse().toString()
     }
 }
