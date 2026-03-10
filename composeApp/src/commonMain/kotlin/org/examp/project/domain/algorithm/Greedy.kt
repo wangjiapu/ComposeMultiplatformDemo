@@ -1,5 +1,8 @@
 package org.examp.project.domain.algorithm
 
+import org.examp.project.domain.core.PriorityQueueCompat
+import kotlin.math.min
+
 class Greedy {
 
     /**
@@ -27,4 +30,26 @@ class Greedy {
 
         return candies.sum()
     }
+
+    /**
+     * 主持人调度（二）
+     */
+    fun minmumNumberOfHost(n: Int, startEnd: Array<IntArray>): Int {
+        if (n <= 1) {
+            return n
+        }
+        // 排序
+        startEnd.sortWith(compareBy({ it[0] }, { it[1] }))
+        val minHeap = PriorityQueueCompat<Int>(comparator = { a, b -> a - b })
+        minHeap.add(startEnd[0][1])
+        for (i in 1 until startEnd.size) {
+            if (minHeap.peek()!! <= startEnd[i][0]){
+                minHeap.poll()
+            }
+            minHeap.add(startEnd[i][1])
+        }
+
+        return minHeap.size()
+    }
+
 }
