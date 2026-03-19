@@ -1,6 +1,8 @@
 package org.examp.project.domain.algorithm
 
 import org.examp.project.domain.core.PriorityQueueCompat
+import kotlin.math.max
+import kotlin.math.min
 
 class Greedy {
 
@@ -84,5 +86,30 @@ class Greedy {
         return result.toTypedArray()
     }
 
+
+    fun solve(str: String): String {
+        return str.reversed()
+    }
+
+    /**
+     * 盛水最多的容器
+     */
+    fun maxArea(height: IntArray): Int {
+        var maxArea = 0
+        var left = 0
+        var right = height.size - 1
+
+        while (left < right) {
+            val w = right - left
+            val h = min(height[left], height[right])
+            maxArea = max(maxArea, w * h)
+            if (height[left] < height[right]) {
+                left++
+            } else {
+                right--
+            }
+        }
+        return maxArea
+    }
 
 }
