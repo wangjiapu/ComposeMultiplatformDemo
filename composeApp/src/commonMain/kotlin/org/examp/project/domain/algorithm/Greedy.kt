@@ -171,4 +171,64 @@ class Greedy {
         }
         return totalWater
     }
+
+    /**
+     * 最长无重复子数组
+     */
+    // 暴力解法
+    fun maxLength(arr: IntArray): Int {
+        var maxLen = 0
+        val setInt = HashSet<Int>()
+        arr.forEach {
+            if (setInt.contains(it)) {
+                maxLen = max(setInt.size, maxLen)
+                setInt.clear()
+            }
+            setInt.add(it)
+        }
+        return max(maxLen, setInt.size)
+    }
+
+    // 双指针+hash
+    fun maxLengthDoublePoint(nums: IntArray): Int {
+        if (nums.isEmpty()) return 0
+
+        val n = nums.size
+        var maxLen = 0 // 最长无重复子数组长度
+        var left = 0 // 窗口左边界
+        val indexMap = mutableMapOf<Int, Int>() // 元素 -> 最后出现的下标
+
+        for (right in 0 until n) {
+            val current = nums[right]
+            // 若当前元素在窗口内重复，收缩左边界到重复位置+1
+            if (indexMap.containsKey(current) && indexMap[current]!! >= left) {
+                left = indexMap[current]!! + 1
+            }
+            // 更新当前元素的最新下标
+            indexMap[current] = right
+            // 计算当前窗口长度，更新最大值
+            maxLen = maxOf(maxLen, right - left + 1)
+        }
+
+        return maxLen
+    }
+
+    // 字符串的方法
+    fun lengthOfLongestSubstring(s: String): Int {
+        if (s.isEmpty()) {
+            return 0
+        }
+        val map = mutableMapOf<Char, Int>()
+        var maxLen = 0
+        var left = 0
+        for (right in s.indices) {
+            val currentCh = s[right]
+            if (map.containsKey(currentCh) && map[currentCh]!! >= left) {
+                left = map[currentCh]!! + 1
+            }
+            map[currentCh] = right
+            maxLen = max(maxLen, right - left + 1)
+        }
+        return maxLen
+    }
 }
