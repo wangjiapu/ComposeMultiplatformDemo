@@ -87,6 +87,9 @@ class Greedy {
     }
 
 
+    /**
+     * 反转字符串
+     */
     fun solve(str: String): String {
         return str.reversed()
     }
@@ -112,4 +115,60 @@ class Greedy {
         return maxArea
     }
 
+
+    /**
+     * 接雨水问题
+     */
+    // 暴力解法
+    fun maxWater(arr: IntArray): Long {
+        if (arr.size < 3) {
+            return 0L
+        }
+        var totalWater = 0L
+        for (i in 1 until arr.size - 1) {
+            var leftMaxHeight = 0
+            for (j in 0..i) {
+                //找到左边最高
+                leftMaxHeight = max(leftMaxHeight, arr[j])
+            }
+
+            var rightMaxHeight = 0
+            for (j in i + 1..<arr.size) {
+                // 找到右边最高
+                rightMaxHeight = max(rightMaxHeight, arr[j])
+            }
+            // 计算当前位置可接过少水
+            val waterSize = min(leftMaxHeight, rightMaxHeight) - arr[i]
+            // 如果当前位置高于左右最高，那么接到的水<0 ,只存储>0的水
+            if (waterSize > 0) {
+                totalWater += waterSize
+            }
+        }
+        return totalWater
+    }
+
+    // 双指针
+    fun maxWaterDoublePoint(arr: IntArray): Long {
+        if (arr.size < 3) {
+            return 0L
+        }
+        var left = 0
+        var right = arr.size - 1
+
+        var leftMax = 0
+        var rightMax = 0
+        var totalWater = 0L
+        while (left < right) {
+            leftMax = max(leftMax, arr[left])
+            rightMax = max(rightMax, arr[right])
+            if (leftMax < rightMax) {
+                totalWater += (leftMax - arr[left])
+                left++
+            } else {
+                totalWater += (rightMax - arr[right])
+                right--
+            }
+        }
+        return totalWater
+    }
 }
