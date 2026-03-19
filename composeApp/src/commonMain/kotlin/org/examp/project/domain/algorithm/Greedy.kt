@@ -1,7 +1,6 @@
 package org.examp.project.domain.algorithm
 
 import org.examp.project.domain.core.PriorityQueueCompat
-import kotlin.math.min
 
 class Greedy {
 
@@ -43,7 +42,7 @@ class Greedy {
         val minHeap = PriorityQueueCompat<Int>(comparator = { a, b -> a - b })
         minHeap.add(startEnd[0][1])
         for (i in 1 until startEnd.size) {
-            if (minHeap.peek()!! <= startEnd[i][0]){
+            if (minHeap.peek()!! <= startEnd[i][0]) {
                 minHeap.poll()
             }
             minHeap.add(startEnd[i][1])
@@ -51,5 +50,39 @@ class Greedy {
 
         return minHeap.size()
     }
+
+    /**
+     * 合并区间
+     */
+    class Interval {
+        var start: Int = 0 //起点
+        var end: Int = 0 //终点
+        override fun toString(): String {
+            return "[${start},${end}]"
+        }
+    }
+
+    fun merge(intervals: Array<Interval?>): Array<Interval?> {
+        if (intervals.size <= 1) {
+            return intervals
+        }
+        intervals.sortWith(compareBy({ it?.start }, { it?.end }))
+        val result = mutableListOf<Interval>()
+        intervals[0]?.let {
+            result.add(it)
+        }
+        for (i in 1..<intervals.size) {
+            intervals[i]?.let {
+                val tempInterval = result[result.size - 1]
+                if (tempInterval.end >= it.start) {
+                    tempInterval.end = maxOf(it.end, tempInterval.end)
+                } else {
+                    result.add(it)
+                }
+            }
+        }
+        return result.toTypedArray()
+    }
+
 
 }
